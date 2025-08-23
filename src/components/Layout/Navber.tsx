@@ -13,14 +13,14 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { Link } from "react-router";
 import { ModeToggle } from "./ModeToggoler";
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
-  { href: "#", label: "Home", active: true },
-  { href: "#", label: "Features" },
-  { href: "#", label: "Pricing" },
-  { href: "#", label: "About" },
+  { href: "/", label: "Home" },
+  { href: "/about", label: "About" },
+  { href: "/pricing", label: "Pricing" },
 ];
 
 export default function Navbar() {
@@ -73,8 +73,7 @@ export default function Navbar() {
                       className="w-full">
                       <NavigationMenuLink
                         href={link.href}
-                        className="py-1.5"
-                        active={link.active}>
+                        className="py-1.5">
                         {link.label}
                       </NavigationMenuLink>
                     </NavigationMenuItem>
@@ -96,10 +95,9 @@ export default function Navbar() {
                 {navigationLinks.map((link, index) => (
                   <NavigationMenuItem key={index}>
                     <NavigationMenuLink
-                      active={link.active}
-                      href={link.href}
+                      asChild
                       className="text-muted-foreground hover:text-primary py-1.5 font-medium">
-                      {link.label}
+                      <Link to={link.href}>{link.label}</Link>
                     </NavigationMenuLink>
                   </NavigationMenuItem>
                 ))}
@@ -114,15 +112,9 @@ export default function Navbar() {
             variant="ghost"
             size="sm"
             className="text-sm">
-            <a href="#">Sign In</a>
+            <Link to={"/login"}>LOGIN</Link>
           </Button>
           <ModeToggle />
-          <Button
-            asChild
-            size="sm"
-            className="text-sm">
-            <a href="#">Get Started</a>
-          </Button>
         </div>
       </div>
     </header>
