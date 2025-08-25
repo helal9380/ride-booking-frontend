@@ -13,27 +13,48 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import {
+  authApi,
+  useLogoutMutation,
+  useUserInfoQuery,
+} from "@/Redux/features/auth.api";
+import { useAppDispatch } from "@/Redux/hook";
 import { Link } from "react-router";
+import { toast } from "sonner";
 import { ModeToggle } from "./ModeToggoler";
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
-  { href: "/pricing", label: "Pricing" },
+  { href: "/features", label: "Features" },
+  { href: "/contact", label: "Contact" },
+  { href: "/faq", label: "FAQ" },
+  { href: "/dashboard", label: "DASHBOARD" },
 ];
 
 export default function Navbar() {
+  const { data } = useUserInfoQuery(undefined);
+  const [logout] = useLogoutMutation();
+  const dispatch = useAppDispatch();
+
+  const handlelogout = async () => {
+    const res = await logout(undefined);
+    if (res.data.success) {
+      toast.success("User logout successfully");
+      dispatch(authApi.util.resetApiState());
+    }
+  };
   return (
     <header className="border-b">
-      <div className="container mx-auto px-4 flex h-16 items-center justify-between gap-4">
+      <div className="container mx-auto px-4 flex h-16 items-center justify-between gap-10">
         {/* Left side */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 w-full">
           {/* Mobile menu trigger */}
           <Popover>
             <PopoverTrigger asChild>
               <Button
-                className="group size-8 md:hidden"
+                className="group text-foreground size-8 md:hidden"
                 variant="ghost"
                 size="icon">
                 <svg
@@ -65,16 +86,14 @@ export default function Navbar() {
             <PopoverContent
               align="start"
               className="w-36 p-1 md:hidden">
-              <NavigationMenu className="max-w-none *:w-full">
+              <NavigationMenu className="max-w-none *:w-full ">
                 <NavigationMenuList className="flex-col items-start gap-0 md:gap-2">
                   {navigationLinks.map((link, index) => (
                     <NavigationMenuItem
                       key={index}
                       className="w-full">
-                      <NavigationMenuLink
-                        href={link.href}
-                        className="py-1.5">
-                        {link.label}
+                      <NavigationMenuLink className="py-1.5">
+                        <Link to={link.href}>{link.label}</Link>
                       </NavigationMenuLink>
                     </NavigationMenuItem>
                   ))}
@@ -83,7 +102,7 @@ export default function Navbar() {
             </PopoverContent>
           </Popover>
           {/* Main nav */}
-          <div className="flex items-center gap-6">
+          <div className="flex items-center justify-between w-full gap-6">
             <a
               href="#"
               className="text-primary hover:text-primary/90">
@@ -96,7 +115,7 @@ export default function Navbar() {
                   <NavigationMenuItem key={index}>
                     <NavigationMenuLink
                       asChild
-                      className="text-muted-foreground hover:text-primary py-1.5 font-medium">
+                      className="text-muted-foreground hover:text-foreground py-1.5 font-medium">
                       <Link to={link.href}>{link.label}</Link>
                     </NavigationMenuLink>
                   </NavigationMenuItem>
@@ -106,14 +125,25 @@ export default function Navbar() {
           </div>
         </div>
         {/* Right side */}
-        <div className="flex items-center gap-2">
-          <Button
-            asChild
-            variant="ghost"
-            size="sm"
-            className="text-sm">
-            <Link to={"/login"}>LOGIN</Link>
-          </Button>
+        <div className="flex items-center gap-2 text-foreground">
+          {data?.data?.email ? (
+            <Button
+              onClick={handlelogout}
+              variant="outline"
+              size="sm"
+              className="text-sm">
+              LOGOUT
+            </Button>
+          ) : (
+            <Button
+              asChild
+              variant="secondary"
+              size="sm"
+              className="text-sm bg-primary">
+              <Link to={"/login"}>LOGIN</Link>
+            </Button>
+          )}
+
           <ModeToggle />
         </div>
       </div>

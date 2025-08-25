@@ -10,15 +10,27 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
 import { Input } from "@/components/ui/input";
 import Password from "@/components/ui/Password";
 
 import { cn } from "@/lib/utils";
-import { useRegisterMutation } from "@/Redux/features/auth.api";
+import {
+  useLogoutMutation,
+  useRegisterMutation,
+} from "@/Redux/features/auth.api";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { toast } from "sonner";
 import { z } from "zod";
 
 const registerSchema = z
@@ -30,6 +42,7 @@ const registerSchema = z
       })
       .max(50),
     email: z.email(),
+    role: z.string(),
     password: z.string().min(6, { error: "Password is too short" }),
     confirmPassword: z
       .string()
@@ -45,11 +58,14 @@ export function RegisterForm({
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) {
   const [register] = useRegisterMutation();
+  const [logout] = useLogoutMutation();
+  const navigate = useNavigate();
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
       name: "",
       email: "",
+      role: "",
       password: "",
       confirmPassword: "",
     },
@@ -60,9 +76,15 @@ export function RegisterForm({
       name: data.name,
       email: data.email,
       password: data.password,
+      role: data.role,
     };
     try {
       const result = await register(userInfo).unwrap();
+      if (result.success) {
+        toast.success("Registration successfull");
+        await logout(undefined);
+        navigate("/login");
+      }
       console.log(result);
     } catch (error) {
       console.log(error);
@@ -72,20 +94,22 @@ export function RegisterForm({
 
   return (
     <div
-      className={cn("flex flex-col gap-6", className)}
+      className={cn("flex flex-col text-foreground gap-4", className)}
       {...props}>
       <div className="flex flex-col items-center gap-2 text-center">
-        <h1 className="text-2xl font-bold">Register your account</h1>
+        <h1 className="text-2xl font-bold">
+          Register your <span className="text-primary font-bold">account</span>
+        </h1>
         <p className="text-sm text-muted-foreground">
           Enter your details to create an account
         </p>
       </div>
 
-      <div className="grid gap-6">
+      <div className="grid gap-6 border-2 p-4">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-6">
+            className="space-y-4 grid md:grid-cols-2 gap-6">
             <FormField
               control={form?.control}
               name="name"
@@ -113,13 +137,40 @@ export function RegisterForm({
                   <FormLabel>Email</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Enter your email"
+                      className="bg-transparent"
+                      placeholder="Enter your name"
                       type="email"
                       {...field}
                     />
                   </FormControl>
                   <FormDescription className="sr-only">
                     This is your axual name
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form?.control}
+              name="role"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Role</FormLabel>
+                  <FormControl>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}>
+                      <SelectTrigger className="w-full text-foreground">
+                        <SelectValue placeholder="Select your role" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="RIDER">Rider</SelectItem>
+                        <SelectItem value="DRIVER">Driver</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormDescription className="sr-only">
+                    This is your role
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -157,11 +208,14 @@ export function RegisterForm({
                 </FormItem>
               )}
             />
-            <Button
-              type="submit"
-              className="w-full">
-              Submit
-            </Button>
+            <div>
+              <p className="">Submit for registration</p>
+              <Button
+                type="submit"
+                className="w-full text-foreground">
+                Submit
+              </Button>
+            </div>
           </form>
         </Form>
 

@@ -1,6 +1,7 @@
 /** @format */
 
 import Logo from "@/assets/icons/Logo";
+import { Link } from "react-router";
 
 export default function Footer() {
   return (
@@ -13,8 +14,8 @@ export default function Footer() {
             </div>
 
             <p className="mt-4 max-w-xs text-muted-foreground">
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Esse non
-              cupiditate quae nam molestias.
+              Book rides instantly with trusted drivers. Fast, reliable, and
+              hassle-free travel – all in one.
             </p>
 
             <ul className="mt-8 flex gap-6">
@@ -136,7 +137,15 @@ export default function Footer() {
                     href="#"
                     className="text-foreground/90 transition hover:text-foreground/60">
                     {" "}
-                    1on1 Coaching{" "}
+                    Rider Features{" "}
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="text-foreground/90 transition hover:text-foreground/60">
+                    {" "}
+                    Driver Features{" "}
                   </a>
                 </li>
 
@@ -145,28 +154,17 @@ export default function Footer() {
                     href="#"
                     className="text-foreground/90 transition hover:text-foreground/60">
                     {" "}
-                    Company Review{" "}
+                    Admin Dashboard{" "}
                   </a>
                 </li>
-
                 <li>
                   <a
                     href="#"
                     className="text-foreground/90 transition hover:text-foreground/60">
                     {" "}
-                    Accounts Review{" "}
+                    Pricing{" "}
                   </a>
                 </li>
-
-                <li>
-                  <a
-                    href="#"
-                    className="text-foreground/90 transition hover:text-foreground/60">
-                    {" "}
-                    HR Consulting{" "}
-                  </a>
-                </li>
-
                 <li>
                   <a
                     href="#"
@@ -183,12 +181,12 @@ export default function Footer() {
 
               <ul className="mt-6 space-y-4 text-sm">
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    to="/about"
                     className="text-foreground/90 transition hover:text-foreground/60">
                     {" "}
                     About{" "}
-                  </a>
+                  </Link>
                 </li>
 
                 <li>
@@ -216,21 +214,21 @@ export default function Footer() {
 
               <ul className="mt-6 space-y-4 text-sm">
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    to="/contact"
                     className="text-foreground/90 transition hover:text-foreground/60">
                     {" "}
                     Contact{" "}
-                  </a>
+                  </Link>
                 </li>
 
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    to="faq"
                     className="text-foreground/90 transition hover:text-foreground/60">
                     {" "}
                     FAQs{" "}
-                  </a>
+                  </Link>
                 </li>
 
                 <li>

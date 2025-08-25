@@ -2,7 +2,7 @@
 
 import { baseApi } from "../baseApi";
 
-export const authApi = baseApi.injectEndpoints({
+export const rideApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     register: builder.mutation({
       query: (userInfo) => ({
@@ -25,12 +25,12 @@ export const authApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["USER"],
     }),
-    userInfo: builder.query({
+    getRide: builder.query({
       query: () => ({
-        url: "/users/me",
+        url: "/rides/me",
         method: "GET",
       }),
-      providesTags: ["USER"],
+      providesTags: ["RIDE"],
     }),
   }),
 });
@@ -39,5 +39,5 @@ export const {
   useRegisterMutation,
   useLoginMutation,
   useLogoutMutation,
-  useUserInfoQuery,
-} = authApi;
+  useGetRideQuery,
+} = rideApi;

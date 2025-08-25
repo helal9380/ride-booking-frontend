@@ -10,6 +10,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import config from "@/config/intex";
 import { cn } from "@/lib/utils";
 import { useLoginMutation } from "@/Redux/features/auth.api";
 import { useForm, type FieldValues, type SubmitHandler } from "react-hook-form";
@@ -28,12 +29,20 @@ export function LoginForm({
     try {
       const res = await login(data).unwrap();
       console.log(res);
-    } catch (err) {
+      if (res.success) {
+        toast.success("User login successfully");
+        if (res.data.user.role) navigate("/dashboard");
+        else {
+          navigate("/");
+        }
+      }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
       console.error(err);
 
       if (err.status === 401) {
-        toast.error("Your account is not verified");
-        navigate("/", { state: data.email });
+        toast.error("Your not login");
+        navigate("/login", { state: data.email });
       }
     }
   };
@@ -47,7 +56,7 @@ export function LoginForm({
           Enter your email below to login to your account
         </p>
       </div>
-      <div className="grid gap-6">
+      <div className="grid text-foreground gap-6">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -60,7 +69,7 @@ export function LoginForm({
                   <FormLabel>Email</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="john@example.com"
+                      placeholder="Enter your email"
                       {...field}
                       value={field.value || ""}
                     />
@@ -91,7 +100,7 @@ export function LoginForm({
 
             <Button
               type="submit"
-              className="w-full">
+              className="w-full text-foreground">
               Login
             </Button>
           </form>
@@ -104,13 +113,14 @@ export function LoginForm({
         </div>
 
         <Button
+          onClick={() => window.open(`${config.baseUrl}/auth/google`)}
           type="button"
           variant="outline"
-          className="w-full cursor-pointer">
+          className="w-full cursor-pointer text-foreground">
           Login with Google
         </Button>
       </div>
-      <div className="text-center text-sm">
+      <div className="text-center text-sm text-foreground">
         Don&apos;t have an account?{" "}
         <Link
           to="/register"

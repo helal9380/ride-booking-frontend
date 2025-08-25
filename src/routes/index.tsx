@@ -1,7 +1,13 @@
 /** @format */
 
 import App from "@/App";
+import Dashboard from "@/components/modules/Dashboard/Dashboard";
 import About from "@/pages/About";
+import Contact from "@/pages/Contact";
+import FAQ from "@/pages/FAQ";
+import Features from "@/pages/Features";
+import Home from "@/pages/Home";
+
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 
@@ -13,8 +19,24 @@ export const router = createBrowserRouter([
     path: "/",
     children: [
       {
+        Component: Home,
+        path: "",
+      },
+      {
         Component: About,
         path: "about",
+      },
+      {
+        Component: Features,
+        path: "features",
+      },
+      {
+        Component: Contact,
+        path: "contact",
+      },
+      {
+        Component: FAQ,
+        path: "faq",
       },
     ],
   },
@@ -26,4 +48,22 @@ export const router = createBrowserRouter([
     Component: Register,
     path: "register",
   },
+  {
+    Component: Dashboard,
+    path: "dashboard",
+    children: [
+      {
+        Component: Dashboard,
+        path: "",
+      },
+    ],
+  },
+  // {
+  //   Component: DriverDashboard,
+  //   path: "driver-dashboard",
+  // },
+  // {
+  //   Component: AdminDashboard,
+  //   path: "admin-dashboard",
+  // },
 ]);
