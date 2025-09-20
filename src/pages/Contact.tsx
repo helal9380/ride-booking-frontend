@@ -12,7 +12,7 @@ export default function Contact() {
   };
 
   return (
-    <div className="max-w-md mx-auto shadow-2xl border-primary border-1 rounded-lg my-10 px-4 py-16 text-foreground">
+    <div className="max-w-md mx-auto shadow-2xl border-1 rounded-lg my-10 px-4 py-16 text-foreground bg-background">
       <h1 className="text-3xl font-bold mb-6 text-center">Contact Us</h1>
       <form
         onSubmit={handleSubmit(onSubmit)}

@@ -7,7 +7,7 @@ const HowToWorkSection = () => {
   return (
     <div className="my-5">
       <section className="max-w-6xl mx-auto px-4">
-        <h2 className="text-2xl text-foreground font-semibold text-center mb-10">
+        <h2 className="md:text-2xl text-xl text-background font-semibold text-center mb-10">
           How It Works
         </h2>
         <div className="grid md:grid-cols-3 gap-6 text-foreground">
@@ -27,7 +27,7 @@ const HowToWorkSection = () => {
       </section>
 
       <section className=" py-16">
-        <h2 className="text-2xl text-foreground font-semibold text-center mb-10">
+        <h2 className="text-2xl text-background font-semibold text-center mb-10">
           Why Choose Us
         </h2>
         <div className="grid md:grid-cols-4 text-foreground gap-6 max-w-6xl mx-auto px-4">

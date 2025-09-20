@@ -3,7 +3,7 @@
 const Testimonials = () => {
   return (
     <section className="max-w-6xl mx-auto px-4 py-16">
-      <h2 className="text-2xl text-foreground font-semibold text-center mb-10">
+      <h2 className="text-2xl text-background font-semibold text-center mb-10">
         What Our Customers Say
       </h2>
       <div className="grid text-foreground md:grid-cols-2 gap-6">

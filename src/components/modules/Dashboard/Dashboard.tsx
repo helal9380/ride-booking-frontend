@@ -1,9 +1,11 @@
 /** @format */
 
 import Menubar from "@/components/Menubar";
+import { Button } from "@/components/ui/button";
 import { useUserInfoQuery } from "@/Redux/features/auth.api";
 import { useGetRideQuery } from "@/Redux/features/ride.api";
 import { useEffect, useState } from "react";
+import { Link } from "react-router";
 import AdminDashboard from "../AdminDashboard/AdminDashboard";
 import DriverDashboard from "../DriverDashboard/DriverDashboard";
 import RiderInfo from "./RiderInfo";
@@ -42,19 +44,34 @@ const Dashboard = () => {
   if (data?.data?.isOnline) {
     online = "blue";
   }
+  console.log(data);
   return (
     <div className="p-6 space-y-6 text-foreground">
-      <h1 className="text-3xl font-bold">{user}</h1>
-      <div>
-        <h4>Name: {data?.data?.name}</h4>
-        <h5>Email: {data?.data?.email}</h5>
-        <p className={`${online}`}>
-          Status: <span>{data?.data?.isOnline ? "Online" : "Offline"}</span>
-        </p>
-      </div>
-      <Menubar role={data?.data?.role} />
+      {data?.success ? (
+        <>
+          <div>
+            <h1 className="text-3xl font-bold">{user}</h1>
+            <div>
+              <h4>Name: {data?.data?.name}</h4>
+              <h5>Email: {data?.data?.email}</h5>
+              <p className={`${online}`}>
+                Status:{" "}
+                <span>{data?.data?.isOnline ? "Online" : "Offline"}</span>
+              </p>
+            </div>
+            <Menubar role={data?.data?.role} />
 
-      {randerComponent}
+            {randerComponent}
+          </div>
+        </>
+      ) : (
+        <>
+          <p>"for showing dashboard Please login firstly"</p>
+          <Button className="text-foreground">
+            <Link to={"/login"}>Login</Link>
+          </Button>
+        </>
+      )}
     </div>
   );
 };
